@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import _ from 'lodash';
 import FutureWeatherWidget from './futureWeatherWidget';
+import './weatherWidget.css';
 
 const FutureWeather = (props) => {
     const [futureWeather, setFutureWeather] = useState([]);
@@ -17,7 +18,7 @@ const FutureWeather = (props) => {
             {props.isLoading ?
                 <p>Loading data ... </p>
                 :
-                <p>{props.city}</p>
+                <h4 className='mb-4'>Forecast</h4>
             }
             {!_.isEmpty(futureWeather) ? [0, 1, 2, 3, 4].map(index => (
                 <FutureWeatherWidget key={index.toString()} index={index} weather={futureWeather[index]}

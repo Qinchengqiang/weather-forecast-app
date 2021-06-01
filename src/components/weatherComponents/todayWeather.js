@@ -62,7 +62,6 @@ const TodayWeather = (props) => {
                         <p className='text-black-50'>sunrise</p>
                         <p className='pl-4 text-black-50'>sunset</p>
                     </div>
-
                 </div>
 
             </div>

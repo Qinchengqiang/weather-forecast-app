@@ -1,0 +1,10 @@
+.widgetCard :hover {
+  background-color: rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+.widgetCard * :hover {
+  background-color: transparent;
+  cursor: auto;
+}
+
+/*# sourceMappingURL=weatherWidget.css.map */
