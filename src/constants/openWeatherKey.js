@@ -1,0 +1,1 @@
+export const openWeatherKey = '5f27e6de016a45e5d58cf3cf874bd3be';

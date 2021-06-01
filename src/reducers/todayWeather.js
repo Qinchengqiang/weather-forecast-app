@@ -8,6 +8,8 @@ const todayWeather = (state = initState, action = {}) => {
         case SET_TODAY_WEATHER:
             // TODO
             // update initState
+
+
             return state;
         default:
             return state;
