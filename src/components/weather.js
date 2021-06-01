@@ -85,6 +85,34 @@ const Weather = () => {
         }
     }, [dispatch, location]);
 
+    /** update location every 10 min */
+    useEffect(() => {
+        setInterval(() => {
+            getLocation(setLocation);
+        }, 1000 * 60 * 10)
+    }, [])
+
+    /** update location every 1 min */
+    useEffect(() => {
+        setInterval(() => {
+            if (!_.isEmpty(location)) {
+                dispatch(fetchOpenWeather(location))
+                    .then(
+                        (data) => {
+                            setCity(data.timezone.split('/')[1]);
+                            setTodayWeather({current: data.current, hourly: data.hourly});
+                            setFutureWeather(data.daily);
+                        },
+                        () => {
+                            setCity("Sydney");
+                            console.log(`Can not get data from openWeather API.`);
+                        }
+                    )
+            }
+        }, 1000 * 60)
+        // eslint-disable-next-line
+    }, [])
+
     return (
         <div className='row justify-content-center'>
             <div className='col-md-6'>
