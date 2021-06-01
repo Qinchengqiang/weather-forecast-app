@@ -1,9 +1,13 @@
 import React from 'react';
 
-const FutureWeather = () => {
+const FutureWeather = (props) => {
     return (
         <div className='card mt-4 border-0 shadow-sm p-2'>
-            FutureWeather
+            {props.isLoading ?
+                <p>Loading ... </p>
+                :
+                <p>{props.city}</p>
+            }
         </div>
     );
 };

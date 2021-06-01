@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from 'react';
-import TodayWeather from "./weatherComponents/todayWeather";
-import FutureWeather from "./weatherComponents/futureWeather";
+import React, {useEffect, useState, Suspense} from 'react';
+// import TodayWeather from "./weatherComponents/todayWeather";
+// import FutureWeather from "./weatherComponents/futureWeather";
 import {useDispatch} from "react-redux";
 import _ from "lodash";
 import {
@@ -9,6 +9,10 @@ import {
     icon12, icon13, icon14, icon15, icon16, icon17
 } from '../assets/animatedIcons_match/index';
 import {fetchOpenWeather} from '../actions/weatherActions';
+
+const TodayWeather = React.lazy(() => import("./weatherComponents/todayWeather"));
+const FutureWeather = React.lazy(() => import('./weatherComponents/futureWeather'));
+
 
 // description : iconName
 const iconMatch = {
@@ -26,23 +30,20 @@ const iconMatch = {
 const getLocation = (setLocation) => {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
-            // success
-            (position) => {
-                console.log(position.coords);
+            (position) => { // success
                 setLocation({
                     latitude: position.coords.latitude,
                     longitude: position.coords.longitude
                 });
             },
 
-            // fail
-             (error) => {
-                 console.log(error);
+            (error) => {   // fail
+                console.log(error);
                 // set default location (Sydney, NSW)
-                 setLocation({
-                     latitude: -33.9444763,
-                     longitude: 151.0516113
-                 });
+                setLocation({
+                    latitude: -33.9444763,
+                    longitude: 151.0516113
+                });
             }
         );
     } else {
@@ -52,32 +53,50 @@ const getLocation = (setLocation) => {
 
 const Weather = () => {
     const dispatch = useDispatch();
+    const [isLoading, setIsLoading] = useState(false);
+
     const [location, setLocation] = useState({});
+    const [city, setCity] = useState('');
+    const [todayWeather, setTodayWeather] = useState({});
+    const [futureWeather, setFutureWeather] = useState({});
 
     useEffect(() => {
         getLocation(setLocation);
-    },[]);
+    }, []);
 
     useEffect(() => {
         if (!_.isEmpty(location)) {
-            dispatch(fetchOpenWeather(location));
-            // TODO
-            // update weather state
-
-
+            setIsLoading(true);
+            dispatch(fetchOpenWeather(location))
+                .then(
+                    (data) => {
+                        setCity(data.timezone.split('/')[1]);
+                        setTodayWeather({current: data.current, hourly: data.hourly});
+                        setFutureWeather(data.daily);
+                        setIsLoading(false);
+                    },
+                    () => {
+                        setCity("Sydney");
+                        console.log(`Can not get data from openWeather API.`);
+                        alert(`Something wrong when downloading data.`);
+                        setIsLoading(false);
+                    }
+                )
         }
     }, [dispatch, location]);
 
     return (
         <div className='row justify-content-center'>
             <div className='col-md-6'>
-                <TodayWeather/>
+                <Suspense fallback={<div className='card mt-4 border-0 shadow-sm p-2' style={{height: '10rem'}}></div>}>
+                    <TodayWeather isLoading={isLoading} city={city} todayWeather={todayWeather} iconMatch={iconMatch}/>
+                </Suspense>
             </div>
             <div className='col-md-6'>
-                <FutureWeather/>
+                <Suspense fallback={<div className='card mt-4 border-0 shadow-sm p-2'>loading...</div>}>
+                    <FutureWeather isLoading={isLoading} futureWeather={futureWeather} iconMatch={iconMatch}/>
+                </Suspense>
             </div>
-
-
         </div>
     );
 };

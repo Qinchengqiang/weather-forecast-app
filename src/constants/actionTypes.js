@@ -1,1 +1,1 @@
-export const SET_TODAY_WEATHER = 'SET_TODAY_WEATHER';
+export const SET_WEATHER = 'SET_WEATHER';
