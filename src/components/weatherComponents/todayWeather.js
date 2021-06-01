@@ -14,8 +14,8 @@ const TodayWeather = (props) => {
 
     useEffect(() => {
         if (!_.isEmpty(props.todayWeather)) {
-            setSunrise(Date(props.todayWeather.current.sunrise).toLocaleString().split(' ')[4].slice(0, 5));
-            setSunset(Date(props.todayWeather.current.sunset).toLocaleString().split(' ')[4].slice(0, 5));
+            setSunrise(new Date(props.todayWeather.current.sunrise).toLocaleString().split(' ')[1].slice(0, 5)+'am');
+            setSunset(new Date(props.todayWeather.current.sunset).toLocaleString().split(' ')[1].slice(0, 5)+"pm");
             setTemperature(props.todayWeather.current.temp - 273.15);
             setFeels(props.todayWeather.current.feels_like - 273.15);
             setHumidity(props.todayWeather.current.humidity);
