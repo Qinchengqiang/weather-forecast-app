@@ -8,10 +8,9 @@ const TodayWeather = (props) => {
     const [feels, setFeels] = useState(0);
     const [humidity, setHumidity] = useState(0);
     const [wind, setWind] = useState(0);
+    const [cloud, setCloud] = useState(0);
     const [weatherDescription, setWeatherDescription] = useState("");
     const [icon, setIcon] = useState("01d");
-
-    const [hourly, setHourly] = useState([]);
 
     useEffect(() => {
         if (!_.isEmpty(props.todayWeather)) {
@@ -21,15 +20,15 @@ const TodayWeather = (props) => {
             setFeels(props.todayWeather.current.feels_like - 273.15);
             setHumidity(props.todayWeather.current.humidity);
             setWind((props.todayWeather.current.wind_speed * 60) / 1000);
+            setCloud(props.todayWeather.current.clouds);
             setIcon(props.todayWeather.current.weather[0].icon);
             setWeatherDescription(props.todayWeather.current.weather[0].description);
-            setHourly(props.todayWeather.hourly[24]);
         }
-    }, [props])
+    }, [props.todayWeather])
 
     return (
         <div className='card mt-4 border-0 shadow-sm p-2'>
-            {props.isLoading ? <p>Loading ... </p> : <h4>{props.city}</h4>}
+            {props.isLoading ? <p>Loading data ... </p> : <h4 className='mt-3'>{props.city}</h4>}
             <div>
                 <img src={props.iconMatch[icon]} style={{width: "8rem", height: "8rem"}} alt="svgicon"/>
             </div>
@@ -39,17 +38,21 @@ const TodayWeather = (props) => {
             </div>
             <div className='m-0 mt-4 text-secondary row justify-content-center'>
                 <div style={{width: "80%", textAlign: 'left'}}>
-                    <div className='mb-3 row justify-content-center'>
-                        <p className='text-black-50'>feels</p>
-                        <p className='pl-4'>{Math.round(feels * 10) / 10}&deg;</p>
+                    <div className='row justify-content-center'>
+                        <p className='mb-0 text-black-50'>feels</p>
+                        <p className='mb-0 pl-4'>{Math.round(feels * 10) / 10}&deg;</p>
                     </div>
-                    <div className='mb-3 row justify-content-center'>
-                        <p className='text-black-50'>humidity</p>
+                    <div className='row justify-content-center'>
+                        <p className='mb-0 text-black-50'>humidity</p>
                         <p className='mb-0 ml-4'>{humidity}%</p>
                     </div>
-                    <div className='mb-3 row justify-content-center'>
-                        <p className='text-black-50'>wind</p>
+                    <div className='row justify-content-center'>
+                        <p className='mb-0 text-black-50'>wind</p>
                         <p className='mb-0 ml-4'>{Math.round(wind * 10) / 10} Km/h </p>
+                    </div>
+                    <div className='row justify-content-center mb-3'>
+                        <p className='mb-0 text-black-50'>cloud</p>
+                        <p className='mb-3 ml-4'>{cloud}%</p>
                     </div>
                     <div className='row justify-content-center'>
                         <p className='mb-0'>{sunrise}</p>

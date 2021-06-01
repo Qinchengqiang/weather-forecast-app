@@ -88,12 +88,14 @@ const Weather = () => {
     return (
         <div className='row justify-content-center'>
             <div className='col-md-6'>
-                <Suspense fallback={<div className='card mt-4 border-0 shadow-sm p-2' style={{height: '10rem'}}></div>}>
+                <Suspense
+                    fallback={<div className='card mt-4 border-0 shadow-sm p-2' style={{height: '10rem'}}>{' '}</div>}>
                     <TodayWeather isLoading={isLoading} city={city} todayWeather={todayWeather} iconMatch={iconMatch}/>
                 </Suspense>
             </div>
             <div className='col-md-6'>
-                <Suspense fallback={<div className='card mt-4 border-0 shadow-sm p-2'>loading...</div>}>
+                <Suspense
+                    fallback={<div className='card mt-4 border-0 shadow-sm p-2' style={{height: '10rem'}}>{' '}</div>}>
                     <FutureWeather isLoading={isLoading} futureWeather={futureWeather} iconMatch={iconMatch}/>
                 </Suspense>
             </div>
