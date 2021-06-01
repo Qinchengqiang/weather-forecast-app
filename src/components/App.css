@@ -1,3 +1,10 @@
 .App {
   text-align: center;
+  min-height: 100vh;
 }
+.App .bd-navbar {
+  padding: 0.75rem 0;
+  background-color: #7952b3;
+}
+
+/*# sourceMappingURL=App.css.map */
