@@ -1,0 +1,1 @@
+export const SET_TODAY_WEATHER = 'SET_TODAY_WEATHER';
